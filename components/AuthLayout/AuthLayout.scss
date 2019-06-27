@@ -1,0 +1,30 @@
+.root {
+  min-height: 100vh;
+  background-color: rgb(57, 27, 99);
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.content {
+  height: 300vh;
+  width: 50%;
+  @media only screen and (max-width: 800px) {
+    display: none;
+  }
+}
+
+.authContainer {
+  position: sticky;
+  top: 0;
+  flex: 1;
+  height: 100vh;
+  overflow: auto;
+  padding: 80px 5vw;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.5) 1px 3px 10px;
+
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { width: 0 !important }
+}

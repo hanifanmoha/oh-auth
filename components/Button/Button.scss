@@ -1,0 +1,14 @@
+.root {
+  background-color: rgb(57, 27, 99);
+  border: 2px solid rgb(57, 27, 99);
+  color: #FFF;
+  font-size: 14px;
+  padding: 15px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid rgba(57, 27, 99, 0.8);
+    background-color: rgba(57, 27, 99, 0.9);
+  }
+}
