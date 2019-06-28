@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Head from 'next/head'
 
 import './style.scss'
 import styles from './index.scss'
@@ -11,6 +12,9 @@ import Button from '../components/Button/Button';
 const Index = () => {
   return (
     <AuthLayout>
+      <Head>
+        <title>Sign In | OH-AUTH</title>
+      </Head>
       <div className={styles.root}>
         <div className={styles.header}>
           <p className={styles.headerText}>Sign In. To be or not</p>

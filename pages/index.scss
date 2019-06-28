@@ -27,4 +27,7 @@
   text-decoration: none;
   color: #888;
   font-weight: 600;
+  &:hover {
+    color: #000;
+  }
 }
