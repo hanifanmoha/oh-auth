@@ -13,7 +13,7 @@ const Index = () => {
   return (
     <AuthLayout>
       <Head>
-        <title>Sign In | OH-AUTH</title>
+        <title>Sign In | OH AUTH</title>
       </Head>
       <div className={styles.root}>
         <div className={styles.header}>
@@ -22,9 +22,10 @@ const Index = () => {
         </div>
         <InputText className={styles.input} label='Email' type='email' />
         <InputText className={styles.input} label='Password' type='password' />
+        <a href='#' className={styles.forgot}>forgot password?</a>
         <div className={styles.actions}>
           <Link href='/register'><a className={styles.textAction}>REGISTER</a></Link>
-          <Button>LOGIN</Button>
+          <Button>SIGN IN</Button>
         </div>
       </div>
     </AuthLayout>

@@ -8,11 +8,20 @@
 
 .headerText {
   text-align: center;
+  font-size: 14px;
   margin-bottom: 5px;
 }
 
 .input {
   margin-bottom: 30px;
+}
+
+.forgot {
+  margin-left: auto;
+  display: block;
+  color: #000;
+  font-size: 12px;
+  text-align: right;
 }
 
 .actions {
@@ -23,7 +32,7 @@
 }
 
 .textAction {
-  font-size: 14px;
+  font-size: 12px;
   text-decoration: none;
   color: #888;
   font-weight: 600;
