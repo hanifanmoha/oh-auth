@@ -5,9 +5,8 @@ import cx from 'classnames'
 const AuthLayout = ({ className, children }) => {
   return (
     <div className={cx(className, styles.root)}>
-      <div className={styles.content}>
-      </div>
       <div className={styles.authContainer}>
+        <img src='https://assets.vsco.co/assets/images/icons/vsco-seal.svg' className={styles.logo} />
         {children}
       </div>
     </div>

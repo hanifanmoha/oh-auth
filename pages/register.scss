@@ -2,10 +2,13 @@
   width: 100%;
 }
 
-.title {
-  margin-bottom: 60px;
-  font-size: 50px;
-  font-weight: 700;
+.header {
+  margin-bottom: 50px;
+}
+
+.headerText {
+  text-align: center;
+  margin-bottom: 5px;
 }
 
 .input {
@@ -20,5 +23,8 @@
 }
 
 .textAction {
-
+  font-size: 14px;
+  text-decoration: none;
+  color: #888;
+  font-weight: 600;
 }

@@ -9,8 +9,9 @@ const InputText = ({
 }) => {
   return (
     <div className={cx(className, styles.root)}>
-      <label className={styles.label}>{label}</label>
+      {/* <label className={styles.label}>{label}</label> */}
       <input
+        placeholder={label}
         {...restProps}
         className={styles.input} />
     </div>
