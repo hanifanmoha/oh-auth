@@ -1,0 +1,2 @@
+Push subtree to heroku
+$ git subtree push --prefix oh-auth-api heroku master
