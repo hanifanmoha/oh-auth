@@ -1,4 +1,5 @@
 node_modules/
+oh-auth-api/node_modules/
 
 .next/
 out/
