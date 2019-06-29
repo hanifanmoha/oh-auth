@@ -1,1 +1,0 @@
-web: node oh-auth-api/bin/www
