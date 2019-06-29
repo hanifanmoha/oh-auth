@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('oh-auth-api:server');
 var http = require('http');
+var db = require('../db/sequelize')
 
 /**
  * Get port from environment and store in Express.
@@ -24,10 +25,15 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+console.log('connectin to database ...')
+db.sequelize.sync({ force: true }).then(async () => {
+  console.log('database connected!');
+  server.listen(port);
+  server.on('error', onError);
+  server.on('listening', onListening);
+}).catch(error => {
+  console.log('error connecting to database!');
+});
 
 /**
  * Normalize a port into a number, string, or false.
