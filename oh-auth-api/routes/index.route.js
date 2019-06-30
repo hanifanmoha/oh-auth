@@ -49,7 +49,10 @@ router.post('/login', async (req, res, next) => {
     const match = await bcrypt.compare(req.body.password, user.hashed_password);
     if (match) {
       const { hashed_password, ...response } = user.dataValues
-      response.token = jwt.sign({ user_id: user.dataValues.id }, JWT_KEY)
+      response.token = jwt.sign({
+        user_id: user.dataValues.id,
+        user_email: user.dataValues.email
+      }, JWT_KEY)
       res.send(rg(true, response, null))
     } else {
       res.send(rg(false, null, ['Email and password pair doesnt match']))

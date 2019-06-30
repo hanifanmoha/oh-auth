@@ -11,7 +11,8 @@ async function verifyJWT(req, res, next) {
       try {
         const currentUser = await db.models.User.findOne({
           where: {
-            id: decoded.user_id
+            id: decoded.user_id,
+            email: decoded.user_email
           }
         })
         if (currentUser) {
