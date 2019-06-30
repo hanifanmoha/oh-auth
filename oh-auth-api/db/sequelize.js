@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize')
-const config = require('../config')
+const dbconfig = require('../config/db')
 
 const sequelize = new Sequelize(
-  config.POSTGRESQL_DB_NAME,
-  config.POSTGRESQL_USERNAME,
-  config.POSTGRESQL_PASSWORD,
+  dbconfig.POSTGRESQL_DB_NAME,
+  dbconfig.POSTGRESQL_USERNAME,
+  dbconfig.POSTGRESQL_PASSWORD,
   {
-    port: config.POSTGRESQL_PORT,
-    host: config.POSTGRESQL_ADDRESS,
+    port: dbconfig.POSTGRESQL_PORT,
+    host: dbconfig.POSTGRESQL_ADDRESS,
     logging: console.log,
     dialect: 'postgres',
     define: {

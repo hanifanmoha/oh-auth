@@ -40,6 +40,10 @@ const user = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
+    hashed_password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   });
 
   return User;

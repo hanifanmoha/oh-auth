@@ -3,3 +3,5 @@ oh-auth-api/node_modules/
 
 .next/
 out/
+
+oh-auth-api/.env
