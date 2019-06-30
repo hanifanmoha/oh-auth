@@ -2,11 +2,13 @@ import styles from './AuthLayout.scss'
 import React from 'react'
 import cx from 'classnames'
 
+import logo from './logo.png'
+
 const AuthLayout = ({ className, children }) => {
   return (
     <div className={cx(className, styles.root)}>
       <div className={styles.authContainer}>
-        <img src='https://assets.vsco.co/assets/images/icons/vsco-seal.svg' className={styles.logo} />
+        <img src={logo} className={styles.logo} />
         {children}
       </div>
     </div>

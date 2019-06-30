@@ -1,74 +1,77 @@
-import React, { useState } from 'react'
-import Link from 'next/link'
-import Head from 'next/head'
-
-import './style.scss'
 import styles from './index.scss'
-import nextRedirect from '../src/redirect'
-import useInputForm from '../src/hooks/useInputForm'
+import React, { useEffect, useState } from 'react'
+import cx from 'classnames'
+import fetch from 'isomorphic-unfetch';
 
-import AuthLayout from '../components/AuthLayout/AuthLayout';
-import InputText from '../components/InputText/InputText';
-import Button from '../components/Button/Button';
+import nextRedirect from '../src/redirect'
+
+import MainLayout from '../components/MainLayout/MainLayout';
 
 const Index = () => {
 
-  const email = useInputForm('')
-  const phone = useInputForm('')
-  const [errorMessages, setErrorMessages] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [users, setUsers] = useState([])
+  const [currentUser, setCurrentUser] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-  async function login() {
-    if (isLoading) return
-    if (!email.value) {
-      setErrorMessages(['Please provide an email'])
-      return
-    }
-    if (!phone.value) {
-      setErrorMessages(['Please provide a phone number'])
-      return
-    }
-    setIsLoading(true)
-    setErrorMessages([])
-    const loginResponse = await fetch('https://oh-auth-api.herokuapp.com/login', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.value, phone: phone.value })
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken')
+    fetch('https://oh-auth-api.herokuapp.com/users', {
+      headers: { 'Authorization': token },
     })
-    const loginResponseJSON = await loginResponse.json()
-    if(loginResponseJSON.success) {
-      nextRedirect({}, '/dashboard')
-    } else {
-      setErrorMessages(loginResponseJSON.errors)
-    }
-    setIsLoading(false)
+      .then(apiReponse => apiReponse.json())
+      .then(apiReponseJSON => {
+        if (apiReponseJSON.success) {
+          setUsers(apiReponseJSON.data.users)
+          setCurrentUser(apiReponseJSON.data.user)
+        } else {
+          nextRedirect({}, '/login')
+        }
+        setIsLoading(false)
+      })
+  }, [])
+
+  if (isLoading) {
+    return <MainLayout>
+      <p>Loading ...</p>
+    </MainLayout>
+  }
+
+  function logout() {
+    localStorage.setItem('accessToken', null)
+    nextRedirect({}, '/login')
   }
 
   return (
-    <AuthLayout>
-      <Head>
-        <title>Sign In | OH AUTH</title>
-      </Head>
-      <div className={styles.root}>
-        <div className={styles.header}>
-          <p className={styles.headerText}>Sign In. To be or not</p>
-          <p className={styles.headerText}>to be, that is the question.</p>
-        </div>
-        {errorMessages.length > 0 && errorMessages.map((errorMessage, key) => {
-          return <p key={key} className={styles.errorMessage}>{errorMessage}</p>
-        })}
-        <div className={styles.form}>
-          <InputText className={styles.input} label='Email' type='email' {...email} />
-          <InputText className={styles.input} label='Phone Number' type='text' {...phone} />
-          <a href='#' className={styles.forgot}>forgot password?</a>
-          <div className={styles.actions}>
-            <Link href='/register'><a className={styles.textAction}>REGISTER</a></Link>
-            <Button onClick={login}>SIGN IN</Button>
-          </div>
-        </div>
-      </div>
-    </AuthLayout>
-  )
+    <MainLayout>
+      <p onClick={logout} className={styles.logout}>logout</p>
+      {currentUser && <h3 className={cx(styles.greeting)}>
+        Hi, {currentUser.first_name} {currentUser.last_name}!
+      </h3>}
+      {currentUser && <pre className={styles.currentUser}>
+        {JSON.stringify(currentUser, null, 2)}
+      </pre>}
+      <hr />
+      <h2 className={cx(styles.title)}>All Active Users</h2>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>PHONE</th>
+            <th>EMAIL</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map(user => {
+            return <tr key={user.id} className={styles.user}>
+              <td>{user.id}</td>
+              <td>{user.phone}</td>
+              <td>{user.email}</td>
+            </tr>
+          })}
+        </tbody>
+      </table>
+    </MainLayout>
+  );
 }
 
-export default Index
+export default Index;

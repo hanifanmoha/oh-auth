@@ -39,7 +39,8 @@ const Index = () => {
     })
     const registerResponseJSON = await registerResponse.json()
     if (registerResponseJSON.success) {
-      nextRedirect({}, '/dashboard')
+      alert('Please check your email to get your password')
+      nextRedirect({}, '/login')
     } else {
       setErrorMessages(registerResponseJSON.errors)
     }
@@ -67,7 +68,7 @@ const Index = () => {
           <InputText className={styles.input} label='Date of Birth' type='date'{...date_of_birth} />
           <InputText className={styles.input} label='Email' type='email' {...email} />
           <div className={styles.actions}>
-            <Link href='/'><a className={styles.textAction}>SIGN IN</a></Link>
+            <Link href='/login'><a className={styles.textAction}>SIGN IN</a></Link>
             <Button onClick={register}>REGISTER</Button>
           </div>
         </div>
