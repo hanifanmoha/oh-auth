@@ -2,7 +2,7 @@ import styles from './AuthLayout.scss'
 import React from 'react'
 import cx from 'classnames'
 
-import logo from './logo.png'
+import logo from './logo1.png'
 
 const AuthLayout = ({ className, children }) => {
   return (
