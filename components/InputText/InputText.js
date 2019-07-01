@@ -43,6 +43,9 @@ const InputText = ({
     } else if (type === 'email' && !isEmail(e.target.value)) {
       valid = false
       setMessage(`${name} is not valid`)
+    } else if (type === 'alpha' && !isAlpha(e.target.value)) {
+      valid = false
+      setMessage(`${name} is not valid. Only alphabets are allowed`)
     } else {
       setMessage('')
     }
@@ -56,6 +59,10 @@ const InputText = ({
 
   function isEmail(str) {
     return str.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+  }
+
+  function isAlpha(str) {
+    return str.match(/^[a-zA-Z]*$/)
   }
 
   return (

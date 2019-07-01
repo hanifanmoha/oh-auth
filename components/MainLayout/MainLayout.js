@@ -5,8 +5,10 @@ import cx from 'classnames'
 const MainLayout = ({ className, children }) => {
   return (
     <div className={cx(className, styles.root)}>
-      <div className={styles.container}>
-        {children}
+      <div className={styles.screen}>
+        <div className={styles.container}>
+          {children}
+        </div>
       </div>
     </div>
   );

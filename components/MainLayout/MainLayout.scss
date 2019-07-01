@@ -1,11 +1,17 @@
 .root {
   min-height: 100vh;
-  padding: 50px 0;
+  background-color: #f1f1f1;
+}
+
+.screen {
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #fff;
+  min-height: 100vh;
+  padding: 50px 0 100px 0;
 }
 
 .container {
-  max-width: 400px;
   padding: 0 20px;
-  width: 100%;
-  margin: 0 auto;
 }

@@ -7,9 +7,11 @@ import logo from './logo1.png'
 const AuthLayout = ({ className, children }) => {
   return (
     <div className={cx(className, styles.root)}>
-      <div className={styles.authContainer}>
-        <img src={logo} className={styles.logo} />
-        {children}
+      <div className={styles.screen}>
+        <div className={styles.authContainer}>
+          <img src={logo} className={styles.logo} />
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -116,9 +116,9 @@ const Index = () => {
           <InputText validate={validate} className={styles.input} required
             name='Mobile Number' placeholder='Mobile Number*' type='phone' {...phone} />
           <InputText validate={validate} className={styles.input} required
-            name='First Name' placeholder='First Name*' type='text' {...firstName} />
+            name='First Name' placeholder='First Name*' type='alpha' {...firstName} />
           <InputText validate={validate} className={styles.input} required
-            name='Last Name' placeholder='Last Name*' type='text' {...lastName} />
+            name='Last Name' placeholder='Last Name*' type='alpha' {...lastName} />
           <DatePicker className={styles.input} label='Date of Birth' type='date'{...dateOfBirth} />
           <RadioGroup className={styles.input} options={genderOptions} name='Gender' {...gender} />
           <InputText validate={validate} className={styles.input} required
