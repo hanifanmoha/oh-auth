@@ -1,0 +1,37 @@
+.root {
+}
+
+.container {
+  display: flex;
+}
+
+.label {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.field {
+  outline: none;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0 10px 0;
+  font-size: 14px;
+  font-weight: 400;
+  margin-right: 15px;
+  cursor: pointer;
+
+  &:focus {
+    border-color: #000;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  option {
+    &:first-child {
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+}

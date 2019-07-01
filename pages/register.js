@@ -1,38 +1,63 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import cx from 'classnames'
 
 import './style.scss'
 import styles from './register.scss'
-import nextRedirect from '../src/redirect'
 import useInputForm from '../src/hooks/useInputForm'
 
 import AuthLayout from '../components/AuthLayout/AuthLayout';
 import InputText from '../components/InputText/InputText';
 import Button from '../components/Button/Button';
+import RadioGroup from '../components/RadioGroup/RadioGroup';
+import DatePicker from '../components/DatePicker/DatePicker';
+
+const SuccessMessage = ({email}) => {
+
+  const ref = useRef(null)
+
+  useEffect(()=>{
+    window.scrollTo(0, ref.current.offsetTop)
+  },[])
+
+  return <div className={styles.box} ref={ref}>
+    <div className={styles.header}>
+      <p className={styles.headerText}>Register Success!</p>
+      <p className={styles.headerText}>We've sent your password to {email}</p>
+    </div>
+    <Link href='/login'><a className={styles.goToLogin}>Go to login page ></a></Link>
+  </div>
+}
 
 const Index = () => {
   const phone = useInputForm('')
-  const first_name = useInputForm('')
-  const last_name = useInputForm('')
-  const date_of_birth = useInputForm('')
-  const gender = useInputForm('')
+  const firstName = useInputForm('')
+  const lastName = useInputForm('')
+  const dateOfBirth = useInputForm(null)
+  const gender = useInputForm('male')
   const email = useInputForm('')
   const [errorMessages, setErrorMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [validate, setValidate] = useState(false)
+  const [successRegister, setSuccessRegister] = useState(false)
 
   async function register() {
     if (isLoading) return
+    setValidate(true)
+    if (!validateForm()) {
+      return
+    }
+
     setIsLoading(true)
-    setErrorMessages([])
     const registerResponse = await fetch('https://oh-auth-api.herokuapp.com/register', {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         phone: phone.value,
-        first_name: first_name.value,
-        last_name: last_name.value,
-        date_of_birth: date_of_birth.value,
+        first_name: firstName.value,
+        last_name: lastName.value,
+        date_of_birth: dateOfBirth.value,
         gender: gender.value,
         email: email.value
       })
@@ -40,19 +65,41 @@ const Index = () => {
     const registerResponseJSON = await registerResponse.json()
     if (registerResponseJSON.success) {
       alert('Please check your email to get your password')
-      nextRedirect({}, '/login')
+      finishRegistraion()
     } else {
       setErrorMessages(registerResponseJSON.errors)
     }
     setIsLoading(false)
   }
 
+  function finishRegistraion() {
+    setSuccessRegister(true);
+  }
+
+  function validateForm() {
+    let errors = []
+    if (phone.message) errors.push(phone.message)
+    if (firstName.message) errors.push(firstName.message)
+    if (lastName.message) errors.push(lastName.message)
+    if (email.message) errors.push(email.message)
+    setErrorMessages(errors)
+    return errors.length === 0
+  }
+
+  const genderOptions = [
+    { label: 'Male', value: 'male' },
+    { label: 'Female', value: 'female' },
+  ]
+
   return (
     <AuthLayout>
       <Head>
         <title>Register | OH AUTH</title>
       </Head>
-      <div className={styles.root}>
+      <div className={cx({
+        [styles.root] : true,
+        [styles.rootDisabled] : successRegister
+      })}>
         <div className={styles.header}>
           <p className={styles.headerText}>Register. To be or not</p>
           <p className={styles.headerText}>to be, that is the question.</p>
@@ -61,18 +108,26 @@ const Index = () => {
           return <p key={key} className={styles.errorMessage}>{errorMessage}</p>
         })}
         <div className={styles.form}>
-          <InputText className={styles.input} label='Phone' type='phone' {...phone} />
-          <InputText className={styles.input} label='First Name' type='text' {...first_name} />
-          <InputText className={styles.input} label='Last Name' type='text' {...last_name} />
-          <InputText className={styles.input} label='Gender (male/female)' type='text' {...gender} />
-          <InputText className={styles.input} label='Date of Birth' type='date'{...date_of_birth} />
-          <InputText className={styles.input} label='Email' type='email' {...email} />
+          <InputText validate={validate} className={styles.input} required
+            name='Mobile Number' placeholder='Mobile Number*' type='phone' {...phone} />
+          <InputText validate={validate} className={styles.input} required
+            name='First Name' placeholder='First Name*' type='text' {...firstName} />
+          <InputText validate={validate} className={styles.input} required
+            name='Last Name' placeholder='Last Name*' type='text' {...lastName} />
+          <DatePicker className={styles.input} label='Date of Birth' type='date'{...dateOfBirth} />
+          <RadioGroup className={styles.input} options={genderOptions} name='Gender' {...gender} />
+          <InputText validate={validate} className={styles.input} required
+            name='Email' placeholder='Email*' type='email' {...email} />
           <div className={styles.actions}>
             <Link href='/login'><a className={styles.textAction}>SIGN IN</a></Link>
-            <Button onClick={register}>REGISTER</Button>
+            <Button onClick={register}>
+              {isLoading ? '...' : 'REGISTER'}
+            </Button>
           </div>
         </div>
       </div>
+      {successRegister && <SuccessMessage email={email.value}/>}
+      
     </AuthLayout>
   )
 }

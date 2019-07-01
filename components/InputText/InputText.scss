@@ -19,3 +19,13 @@
     border-color: #000;
   }
 }
+
+.invalid {
+  border-color: #D43242;
+  background: rgba(237, 0, 1, .1);
+}
+
+.valid {
+  border-color: rgba(34, 144, 159, 1);
+  background: rgba(34, 144, 159, .1);
+}
