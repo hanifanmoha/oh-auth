@@ -6,6 +6,7 @@ import './style.scss'
 import styles from './login.scss'
 import nextRedirect from '../src/redirect'
 import useInputForm from '../src/hooks/useInputForm'
+import config from '../config'
 
 import AuthLayout from '../components/AuthLayout/AuthLayout';
 import InputText from '../components/InputText/InputText';
@@ -20,29 +21,39 @@ const Login = () => {
 
   async function login() {
     if (isLoading) return
-    if (!email.value) {
-      setErrorMessages(['Please provide an email'])
-      return
-    }
-    if (!password.value) {
-      setErrorMessages(['Password must not empty'])
+    if (!validateForm()) {
       return
     }
     setIsLoading(true)
-    setErrorMessages([])
-    const loginResponse = await fetch('https://oh-auth-api.herokuapp.com/login', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.value, password: password.value })
-    })
-    const loginResponseJSON = await loginResponse.json()
-    if(loginResponseJSON.success) {
-      localStorage.setItem('accessToken', loginResponseJSON.data.token)
-      nextRedirect({}, '/')
-    } else {
-      setErrorMessages(loginResponseJSON.errors)
+    try {
+      const loginResponse = await fetch(`${config.BASE_API}/login`, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.value, password: password.value })
+      })
+      const loginResponseJSON = await loginResponse.json()
+      if (loginResponseJSON.success) {
+        localStorage.setItem('accessToken', loginResponseJSON.data.token)
+        nextRedirect({}, '/')
+      } else {
+        setErrorMessages(loginResponseJSON.errors)
+      }
+    } catch (error) {
+      setErrorMessages(['Connection error'])
     }
     setIsLoading(false)
+  }
+
+  function validateForm() {
+    let errors = []
+    if (!email.value) {
+      errors.push('Please provide an email')
+    }
+    if (!password.value) {
+      errors.push('Password must not empty')
+    }
+    setErrorMessages(errors)
+    return errors.length === 0
   }
 
   return (
@@ -52,19 +63,18 @@ const Login = () => {
       </Head>
       <div className={styles.root}>
         <div className={styles.header}>
-          <p className={styles.headerText}>Sign In. To be or not</p>
-          <p className={styles.headerText}>to be, that is the question.</p>
+          <p className={styles.headerText}>Sign In. Please enter</p>
+          <p className={styles.headerText}>your email and password.</p>
         </div>
         {errorMessages.length > 0 && errorMessages.map((errorMessage, key) => {
-          return <p key={key} className={styles.errorMessage}>{errorMessage}</p>
+          return <p key={key} className={styles.errorMessage}>- {errorMessage}</p>
         })}
         <div className={styles.form}>
-          <InputText className={styles.input} label='Email' type='email' {...email} />
-          <InputText className={styles.input} label='Password' type='password' {...password} />
-          <a href='#' className={styles.forgot}>forgot password?</a>
+          <InputText className={styles.input} placeholder='Email' type='email' {...email} />
+          <InputText className={styles.input} placeholder='Password' type='password' {...password} />
           <div className={styles.actions}>
             <Link href='/register'><a className={styles.textAction}>REGISTER</a></Link>
-            <Button onClick={login}>{isLoading? '...' : 'SIGN IN'}</Button>
+            <Button onClick={login} loading={isLoading}>SIGN IN</Button>
           </div>
         </div>
       </div>

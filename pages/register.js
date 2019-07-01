@@ -6,6 +6,7 @@ import cx from 'classnames'
 import './style.scss'
 import styles from './register.scss'
 import useInputForm from '../src/hooks/useInputForm'
+import config from '../config'
 
 import AuthLayout from '../components/AuthLayout/AuthLayout';
 import InputText from '../components/InputText/InputText';
@@ -13,13 +14,13 @@ import Button from '../components/Button/Button';
 import RadioGroup from '../components/RadioGroup/RadioGroup';
 import DatePicker from '../components/DatePicker/DatePicker';
 
-const SuccessMessage = ({email}) => {
+const SuccessMessage = ({ email }) => {
 
   const ref = useRef(null)
 
-  useEffect(()=>{
+  useEffect(() => {
     window.scrollTo(0, ref.current.offsetTop)
-  },[])
+  }, [])
 
   return <div className={styles.box} ref={ref}>
     <div className={styles.header}>
@@ -50,24 +51,28 @@ const Index = () => {
     }
 
     setIsLoading(true)
-    const registerResponse = await fetch('https://oh-auth-api.herokuapp.com/register', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        phone: phone.value,
-        first_name: firstName.value,
-        last_name: lastName.value,
-        date_of_birth: dateOfBirth.value,
-        gender: gender.value,
-        email: email.value
+    try {
+      const registerResponse = await fetch(`${config.BASE_API}/register`, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: phone.value,
+          first_name: firstName.value,
+          last_name: lastName.value,
+          date_of_birth: dateOfBirth.value,
+          gender: gender.value,
+          email: email.value
+        })
       })
-    })
-    const registerResponseJSON = await registerResponse.json()
-    if (registerResponseJSON.success) {
-      alert('Please check your email to get your password')
-      finishRegistraion()
-    } else {
-      setErrorMessages(registerResponseJSON.errors)
+      const registerResponseJSON = await registerResponse.json()
+      if (registerResponseJSON.success) {
+        alert('Please check your email to get your password')
+        finishRegistraion()
+      } else {
+        setErrorMessages(registerResponseJSON.errors)
+      }
+    } catch (error) {
+      setErrorMessages(['Connection error'])
     }
     setIsLoading(false)
   }
@@ -97,15 +102,15 @@ const Index = () => {
         <title>Register | OH AUTH</title>
       </Head>
       <div className={cx({
-        [styles.root] : true,
-        [styles.rootDisabled] : successRegister
+        [styles.root]: true,
+        [styles.rootDisabled]: successRegister
       })}>
         <div className={styles.header}>
-          <p className={styles.headerText}>Register. To be or not</p>
-          <p className={styles.headerText}>to be, that is the question.</p>
+          <p className={styles.headerText}>Register. Please</p>
+          <p className={styles.headerText}>complete this form.</p>
         </div>
         {errorMessages.length > 0 && errorMessages.map((errorMessage, key) => {
-          return <p key={key} className={styles.errorMessage}>{errorMessage}</p>
+          return <p key={key} className={styles.errorMessage}>- {errorMessage}</p>
         })}
         <div className={styles.form}>
           <InputText validate={validate} className={styles.input} required
@@ -120,14 +125,14 @@ const Index = () => {
             name='Email' placeholder='Email*' type='email' {...email} />
           <div className={styles.actions}>
             <Link href='/login'><a className={styles.textAction}>SIGN IN</a></Link>
-            <Button onClick={register}>
-              {isLoading ? '...' : 'REGISTER'}
+            <Button onClick={register} loading={isLoading}>
+              REGISTER
             </Button>
           </div>
         </div>
       </div>
-      {successRegister && <SuccessMessage email={email.value}/>}
-      
+      {successRegister && <SuccessMessage email={email.value} />}
+
     </AuthLayout>
   )
 }
