@@ -64,11 +64,11 @@ const Register = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           phone: phone.value,
-          first_name: firstName.value,
-          last_name: lastName.value,
+          first_name: firstName.value.trim(),
+          last_name: lastName.value.trim(),
           date_of_birth: dateOfBirth.value,
           gender: gender.value,
-          email: email.value
+          email: email.value.trim()
         })
       })
       const registerResponseJSON = await registerResponse.json()

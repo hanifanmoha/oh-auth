@@ -62,7 +62,7 @@ const InputText = ({
   }
 
   function isAlpha(str) {
-    return str.match(/^[a-zA-Z]*$/)
+    return str.match(/^[a-zA-Z ]*$/)
   }
 
   return (

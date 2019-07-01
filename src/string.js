@@ -1,4 +1,5 @@
 function capitalize(str='') {
+  if(!str) return ''
   let s = str.split(' ');
   let S = s.map(s => {
     let c = s.split('')

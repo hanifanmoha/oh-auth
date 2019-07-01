@@ -69,12 +69,12 @@ const Index = () => {
           <tr>
             <td>Gender</td>
             <td>:</td>
-            <td>{capitalize(currentUser.gender)}</td>
+            <td>{currentUser.gender ? capitalize(currentUser.gender) : '--'}</td>
           </tr>
           <tr>
             <td>Date of Birth</td>
             <td>:</td>
-            <td>{currentUser.date_of_birth && (new Date(currentUser.date_of_birth).toDateString())}</td>
+            <td>{currentUser.date_of_birth ? (new Date(currentUser.date_of_birth).toDateString()) : '--'}</td>
           </tr>
         </tbody>
       </table>}
