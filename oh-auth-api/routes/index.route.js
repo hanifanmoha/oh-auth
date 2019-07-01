@@ -100,8 +100,8 @@ const sendEmail = async (user, password) => {
     <p>Email: <b>${user.email}</b></p>
     <p>Password: <b>${password}</b></p>
     <p>Name: <b>${stringUtils.capitalize(user.first_name)} ${stringUtils.capitalize(user.last_name)}</b></p>
-    <p>Gender: <b>${stringUtils.capitalize(user.gender)}</b></p>
-    <p>Date of birth: <b>${(new Date(user.date_of_birth)).toDateString()}</b></p>
+    <p>Gender: <b>${user.gender ? stringUtils.capitalize(user.gender) : '--'}</b></p>
+    <p>Date of birth: <b>${user.date_of_birth ? (new Date(user.date_of_birth)).toDateString() : '--'}</b></p>
   </div>
   `
 
