@@ -7,6 +7,7 @@ import './style.scss'
 import styles from './register.scss'
 import useInputForm from '../src/hooks/useInputForm'
 import config from '../config'
+import nextRedirect from '../src/redirect'
 
 import AuthLayout from '../components/AuthLayout/AuthLayout';
 import InputText from '../components/InputText/InputText';
@@ -24,24 +25,30 @@ const SuccessMessage = ({ email }) => {
 
   return <div className={styles.box} ref={ref}>
     <div className={styles.header}>
-      <p className={styles.headerText}>Register Success!</p>
+      <p className={styles.headerTextBig}>Register Success!</p>
       <p className={styles.headerText}>We've sent your password to {email}</p>
     </div>
     <Link href='/login'><a className={styles.goToLogin}>Go to login page ></a></Link>
   </div>
 }
 
-const Index = () => {
+const Register = () => {
   const phone = useInputForm('')
   const firstName = useInputForm('')
   const lastName = useInputForm('')
   const dateOfBirth = useInputForm(null)
-  const gender = useInputForm('male')
+  const gender = useInputForm(null)
   const email = useInputForm('')
   const [errorMessages, setErrorMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [validate, setValidate] = useState(false)
   const [successRegister, setSuccessRegister] = useState(false)
+
+  useEffect(()=>{
+    if(localStorage.getItem('accessToken')) {
+      nextRedirect({}, '/')
+    }
+  }, [])
 
   async function register() {
     if (isLoading) return
@@ -132,9 +139,8 @@ const Index = () => {
         </div>
       </div>
       {successRegister && <SuccessMessage email={email.value} />}
-
     </AuthLayout>
   )
 }
 
-export default Index
+export default Register

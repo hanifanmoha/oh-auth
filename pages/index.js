@@ -25,6 +25,7 @@ const Index = () => {
           setUsers(apiReponseJSON.data.users)
           setCurrentUser(apiReponseJSON.data.user)
         } else {
+          localStorage.removeItem('accessToken')
           nextRedirect({}, '/login')
         }
         setIsLoading(false)
@@ -38,7 +39,7 @@ const Index = () => {
   }
 
   function logout() {
-    localStorage.setItem('accessToken', null)
+    localStorage.removeItem('accessToken')
     nextRedirect({}, '/login')
   }
 

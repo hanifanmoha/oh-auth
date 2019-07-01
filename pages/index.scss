@@ -17,7 +17,7 @@
 }
 
 .currentUser {
-  border: 1px solid black;
+  border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 12px;
   padding: 15px;
@@ -40,7 +40,7 @@ hr {
   td {
     padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ccc;
   }
 
   tr:hover {
