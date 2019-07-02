@@ -19,8 +19,8 @@ const Login = () => {
   const [errorMessages, setErrorMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(()=>{
-    if(localStorage.getItem('accessToken')) {
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) {
       nextRedirect({}, '/')
     }
   }, [])
@@ -63,7 +63,7 @@ const Login = () => {
   }
 
   function handleKeyPress(e) {
-    if(e.keyCode === 13) {
+    if (e.keyCode === 13) {
       login()
     }
   }
@@ -82,8 +82,10 @@ const Login = () => {
           return <p key={key} className={styles.errorMessage}>- {errorMessage}</p>
         })}
         <div className={styles.form}>
-          <InputText onKeyDown={handleKeyPress} className={styles.input} placeholder='Email' type='email' {...email} />
-          <InputText onKeyDown={handleKeyPress} className={styles.input} placeholder='Password' type='password' {...password} />
+          <InputText className={styles.input} placeholder='Email' type='email' name='email'
+            onKeyDown={handleKeyPress}  {...email} />
+          <InputText className={styles.input} placeholder='Password' type='password' name='password'
+            onKeyDown={handleKeyPress} {...password} />
           <div className={styles.actions}>
             <Link href='/register'><a className={styles.textAction}>REGISTER</a></Link>
             <Button onClick={login} loading={isLoading}>SIGN IN</Button>

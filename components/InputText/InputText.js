@@ -28,7 +28,7 @@ const InputText = ({
 
   function handleChange(e) {
     updateValidation(e)
-    onChange(e)
+    if(onChange) onChange(e)
   }
 
   function updateValidation(e) {
@@ -36,18 +36,18 @@ const InputText = ({
     let valid = true
     if (required && !e.target.value) {
       valid = false
-      setMessage(`${name} is required`)
+      if(setMessage) setMessage(`${name} is required`)
     } else if (type === 'phone' && !isPhone(e.target.value)) {
       valid = false
-      setMessage(`${name} is not valid`)
+      if(setMessage) setMessage(`${name} is not valid`)
     } else if (type === 'email' && !isEmail(e.target.value)) {
       valid = false
-      setMessage(`${name} is not valid`)
+      if(setMessage) setMessage(`${name} is not valid`)
     } else if (type === 'alpha' && !isAlpha(e.target.value)) {
       valid = false
-      setMessage(`${name} is not valid. Only alphabets are allowed`)
+      if(setMessage) setMessage(`${name} is not valid. Only alphabets are allowed`)
     } else {
-      setMessage('')
+      if(setMessage) setMessage('')
     }
     setValid(valid)
     if (setFormValid) setFormValid(valid)

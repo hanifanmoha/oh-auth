@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AuthLayout /> matches snapshot 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div>
+      <img
+        src={
+          Object {
+            "canInstrument": true,
+            "createTransformer": [Function],
+            "getCacheKey": [Function],
+            "process": [Function],
+          }
+        }
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<MainLayout /> matches snapshot 1`] = `
+<div
+  className=""
+>
+  <div>
+    <div />
+  </div>
+</div>
+`;
