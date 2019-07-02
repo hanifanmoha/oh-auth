@@ -5,3 +5,5 @@ oh-auth-api/node_modules/
 out/
 
 oh-auth-api/.env
+
+coverage/
