@@ -21,4 +21,4 @@ Simple Login and Register page
 ### Database 
 
 - PostgreSQL
-- Served from [ElephantSQL](ttps://www.elephantsql.com/)
+- Served from [ElephantSQL](https://www.elephantsql.com/)
