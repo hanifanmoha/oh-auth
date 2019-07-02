@@ -1,9 +1,9 @@
-import styles from './index.scss'
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
-import fetch from 'isomorphic-unfetch'
-import { capitalize } from '../src/string'
 
+import './style.scss'
+import styles from './index.scss'
+import { capitalize } from '../src/string'
 import nextRedirect from '../src/redirect'
 
 import MainLayout from '../components/MainLayout/MainLayout';
