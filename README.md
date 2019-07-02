@@ -4,7 +4,9 @@
 
 Simple Login and Register page
 
-## Used Technology
+![COVER](./cover.png)
+
+## Tech Used
 
 ### Front End
 

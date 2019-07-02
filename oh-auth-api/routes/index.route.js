@@ -91,7 +91,6 @@ router.post('/login', async (req, res, next) => {
 })
 
 const sendEmail = async (user, password) => {
-  console.log(user)
   const web_url = 'https://elated-engelbart-93990b.netlify.com/login'
   const html = `
   <div>
@@ -104,14 +103,18 @@ const sendEmail = async (user, password) => {
     <p>Date of birth: <b>${user.date_of_birth ? (new Date(user.date_of_birth)).toDateString() : '--'}</b></p>
   </div>
   `
-
-  gsend({
-    user: process.env.GMAIL_ACCOUNT,
-    pass: process.env.GMAIL_PASSWORD,
-    to: user.email,
-    subject: 'OH-AUTH CREDENTIAL',
-    html: html,
-  })({})
+  try {
+    gsend({
+      user: process.env.GMAIL_ACCOUNT,
+      pass: process.env.GMAIL_PASSWORD,
+      to: user.email,
+      subject: 'OH-AUTH CREDENTIAL',
+      html: html,
+    })({})
+  } catch (error) {
+    console.log('Sending registration email possibly failed!')
+    console.error(error)
+  }
 }
 
 module.exports = router;
