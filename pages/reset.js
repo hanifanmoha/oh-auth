@@ -7,6 +7,7 @@ import styles from './reset.scss'
 import nextRedirect from '../src/redirect'
 import useInputForm from '../src/hooks/useInputForm'
 import config from '../config'
+import stringUtils from '../src/string'
 
 import AuthLayout from '../components/AuthLayout/AuthLayout';
 import InputText from '../components/InputText/InputText';
@@ -37,7 +38,7 @@ const Reset = ({ router }) => {
         body: JSON.stringify({
           password: password.value,
           confirm_password: confirmPassword.value,
-          token: router.query.token
+          token: stringUtils.parseToken(router.asPath)
         })
       })
       const resetResponseJSON = await resetResponse.json()
