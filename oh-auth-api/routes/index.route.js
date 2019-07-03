@@ -98,38 +98,42 @@ router.post('/forgot', async (req, res, next) => {
 })
 
 router.post('/reset', async (req, res, next) => {
-  const user = await db.models.User.findOne({
-    where: {
-      reset_token: req.body.token
-    }
-  })
-  if (user) {
-    console.log(req.body.password, req.body.confirm_password)
-    if (req.body.password === req.body.confirm_password) {
-      try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        const user = await db.models.User.update({
-          reset_token: null,
-          hashed_password: hashedPassword
-        }, {
-            where: {
-              reset_token: req.body.token
-            }
-        })
-        res.send(rg(true, ['Success update password'], null))
-      } catch (error) {
-        console.error(error)
-        if (error.errors) {
-          res.send(rg(false, null, error.errors.map(e => e.message)))
-        } else {
-          res.send(rg(false, null, error))
+  if (req.body.token) {
+    const user = await db.models.User.findOne({
+      where: {
+        reset_token: req.body.token
+      }
+    })
+    if (user) {
+      console.log(req.body.password, req.body.confirm_password)
+      if (req.body.password === req.body.confirm_password) {
+        try {
+          const hashedPassword = await bcrypt.hash(req.body.password, 10)
+          const user = await db.models.User.update({
+            reset_token: null,
+            hashed_password: hashedPassword
+          }, {
+              where: {
+                reset_token: req.body.token
+              }
+            })
+          res.send(rg(true, ['Success update password'], null))
+        } catch (error) {
+          console.error(error)
+          if (error.errors) {
+            res.send(rg(false, null, error.errors.map(e => e.message)))
+          } else {
+            res.send(rg(false, null, error))
+          }
         }
+      } else {
+        res.send(rg(false, null, ['Confirmation password doesnt match']))
       }
     } else {
-      res.send(rg(false, null, ['Confirmation password doesnt match']))
+      res.send(rg(false, null, ['Reset token is not valid']))
     }
   } else {
-    res.send(rg(false, null, ['Reset token is not valid']))
+    res.send(rg(false, null, ['Reset token is not available']))
   }
 })
 
