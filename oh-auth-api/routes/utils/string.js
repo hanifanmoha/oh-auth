@@ -1,5 +1,5 @@
 function capitalize(str) {
-  if(!str) return ''
+  if (!str) return ''
   let s = str.split(' ');
   let S = s.map(s => {
     c = s.split('')
@@ -9,6 +9,13 @@ function capitalize(str) {
   return S.join(' ')
 }
 
+function random() {
+  return Math.random().toString(36).substring(2, 14)
+    + Math.random().toString(36).substring(2, 14)
+    + Math.random().toString(36).substring(2, 14)
+}
+
 module.exports = {
-  capitalize : capitalize
+  capitalize: capitalize,
+  random: random
 }

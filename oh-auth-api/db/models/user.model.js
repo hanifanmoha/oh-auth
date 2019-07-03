@@ -43,6 +43,10 @@ const user = (sequelize, DataTypes) => {
     hashed_password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    reset_token: {
+      type: DataTypes.STRING,
+      unique: true
     }
   });
 

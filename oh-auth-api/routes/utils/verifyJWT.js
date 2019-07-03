@@ -16,7 +16,7 @@ async function verifyJWT(req, res, next) {
           }
         })
         if (currentUser) {
-          const { hashed_password, ...currentUserNoPass } = currentUser.dataValues
+          const { hashed_password, reset_token, ...currentUserNoPass } = currentUser.dataValues
           req.user = currentUserNoPass
           next()
         } else {

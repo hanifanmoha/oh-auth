@@ -12,10 +12,9 @@ import AuthLayout from '../components/AuthLayout/AuthLayout';
 import InputText from '../components/InputText/InputText';
 import Button from '../components/Button/Button';
 
-const Login = () => {
+const Forgot = () => {
 
   const email = useInputForm('')
-  const password = useInputForm('')
   const [errorMessages, setErrorMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -25,24 +24,24 @@ const Login = () => {
     }
   }, [])
 
-  async function login() {
+  async function forgot() {
     if (isLoading) return
     if (!validateForm()) {
       return
     }
     setIsLoading(true)
     try {
-      const loginResponse = await fetch(`${config.BASE_API}/login`, {
+      const forgotResponse = await fetch(`${config.BASE_API}/forgot`, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.value, password: password.value })
+        body: JSON.stringify({ email: email.value })
       })
-      const loginResponseJSON = await loginResponse.json()
-      if (loginResponseJSON.success) {
-        localStorage.setItem('accessToken', loginResponseJSON.data.token)
-        nextRedirect({}, '/')
+      const forgotResponseJSON = await forgotResponse.json()
+      if (forgotResponseJSON.success) {
+        alert(forgotResponseJSON.data[0])
+        nextRedirect({}, '/login')
       } else {
-        setErrorMessages(loginResponseJSON.errors)
+        setErrorMessages(forgotResponseJSON.errors)
       }
     } catch (error) {
       setErrorMessages(['Connection error'])
@@ -55,28 +54,25 @@ const Login = () => {
     if (!email.value) {
       errors.push('Please provide an email')
     }
-    if (!password.value) {
-      errors.push('Password must not empty')
-    }
     setErrorMessages(errors)
     return errors.length === 0
   }
 
   function handleKeyPress(e) {
     if (e.keyCode === 13) {
-      login()
+      forgot()
     }
   }
 
   return (
     <AuthLayout>
       <Head>
-        <title>Sign In | OH AUTH</title>
+        <title>Forgot Password | OH AUTH</title>
       </Head>
       <div className={styles.root}>
         <div className={styles.header}>
-          <p className={styles.headerText}>Sign In. Please enter</p>
-          <p className={styles.headerText}>your email and password.</p>
+          <p className={styles.headerText}>Forgot Password. Enter your email</p>
+          <p className={styles.headerText}>and we will send the reset instruction.</p>
         </div>
         {errorMessages.length > 0 && errorMessages.map((errorMessage, key) => {
           return <p key={key} className={styles.errorMessage}>- {errorMessage}</p>
@@ -84,17 +80,14 @@ const Login = () => {
         <div className={styles.form}>
           <InputText className={styles.input} placeholder='Email' type='email' name='email'
             onKeyDown={handleKeyPress}  {...email} />
-          <InputText className={styles.input} placeholder='Password' type='password' name='password'
-            onKeyDown={handleKeyPress} {...password} />
-          <Link href='/forgot'><a className={styles.forgot}>forgot password</a></Link>
           <div className={styles.actions}>
-            <Link href='/register'><a className={styles.textAction}>REGISTER</a></Link>
-            <Button onClick={login} loading={isLoading}>SIGN IN</Button>
+            <Link href='/login'><a className={styles.textAction}>SIGN IN</a></Link>
+            <Button onClick={forgot} loading={isLoading}>SEND</Button>
           </div>
         </div>
       </div>
-    </AuthLayout >
+    </AuthLayout>
   )
 }
 
-export default Login
+export default Forgot

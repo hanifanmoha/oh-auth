@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
 import Head from 'next/head'
+import { withRouter } from 'next/router'
 
 import './style.scss'
-import styles from './login.scss'
+import styles from './reset.scss'
 import nextRedirect from '../src/redirect'
 import useInputForm from '../src/hooks/useInputForm'
 import config from '../config'
@@ -12,37 +12,40 @@ import AuthLayout from '../components/AuthLayout/AuthLayout';
 import InputText from '../components/InputText/InputText';
 import Button from '../components/Button/Button';
 
-const Login = () => {
+const Reset = ({ router }) => {
 
-  const email = useInputForm('')
   const password = useInputForm('')
+  const confirmPassword = useInputForm('')
   const [errorMessages, setErrorMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
+  // Logout current account
   useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
-      nextRedirect({}, '/')
-    }
+    localStorage.removeItem('accessToken')
   }, [])
 
-  async function login() {
+  async function reset() {
     if (isLoading) return
     if (!validateForm()) {
       return
     }
     setIsLoading(true)
     try {
-      const loginResponse = await fetch(`${config.BASE_API}/login`, {
+      const resetResponse = await fetch(`${config.BASE_API}/reset`, {
         method: 'post',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.value, password: password.value })
+        body: JSON.stringify({
+          password: password.value,
+          confirm_password: confirmPassword.value,
+          token: router.query.token
+        })
       })
-      const loginResponseJSON = await loginResponse.json()
-      if (loginResponseJSON.success) {
-        localStorage.setItem('accessToken', loginResponseJSON.data.token)
-        nextRedirect({}, '/')
+      const resetResponseJSON = await resetResponse.json()
+      if (resetResponseJSON.success) {
+        alert(resetResponseJSON.data[0])
+        nextRedirect({}, '/login')
       } else {
-        setErrorMessages(loginResponseJSON.errors)
+        setErrorMessages(resetResponseJSON.errors)
       }
     } catch (error) {
       setErrorMessages(['Connection error'])
@@ -52,11 +55,14 @@ const Login = () => {
 
   function validateForm() {
     let errors = []
-    if (!email.value) {
-      errors.push('Please provide an email')
-    }
     if (!password.value) {
       errors.push('Password must not empty')
+    }
+    if (!confirmPassword.value) {
+      errors.push('Confirm Password must not empty')
+    }
+    if (confirmPassword.value !== password.value) {
+      errors.push('Password confirmation doesn\'t match')
     }
     setErrorMessages(errors)
     return errors.length === 0
@@ -64,37 +70,36 @@ const Login = () => {
 
   function handleKeyPress(e) {
     if (e.keyCode === 13) {
-      login()
+      reset()
     }
   }
 
   return (
     <AuthLayout>
       <Head>
-        <title>Sign In | OH AUTH</title>
+        <title>Reset Password | OH AUTH</title>
       </Head>
       <div className={styles.root}>
         <div className={styles.header}>
-          <p className={styles.headerText}>Sign In. Please enter</p>
-          <p className={styles.headerText}>your email and password.</p>
+          <p className={styles.headerText}>Reset Password. Please enter</p>
+          <p className={styles.headerText}>your new password.</p>
         </div>
         {errorMessages.length > 0 && errorMessages.map((errorMessage, key) => {
           return <p key={key} className={styles.errorMessage}>- {errorMessage}</p>
         })}
         <div className={styles.form}>
-          <InputText className={styles.input} placeholder='Email' type='email' name='email'
-            onKeyDown={handleKeyPress}  {...email} />
           <InputText className={styles.input} placeholder='Password' type='password' name='password'
             onKeyDown={handleKeyPress} {...password} />
-          <Link href='/forgot'><a className={styles.forgot}>forgot password</a></Link>
+          <InputText className={styles.input} placeholder='Confirm Password' type='password' name='confirm_password'
+            onKeyDown={handleKeyPress} {...confirmPassword} />
           <div className={styles.actions}>
-            <Link href='/register'><a className={styles.textAction}>REGISTER</a></Link>
-            <Button onClick={login} loading={isLoading}>SIGN IN</Button>
+            <div/>
+            <Button onClick={reset} loading={isLoading}>RESET</Button>
           </div>
         </div>
       </div>
-    </AuthLayout >
+    </AuthLayout>
   )
 }
 
-export default Login
+export default withRouter(Reset)

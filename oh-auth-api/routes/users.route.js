@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', verifyJWT, async (req, res, next) => {
   const users = await db.models.User.findAll()
   const usersNoPass = users.map(user => {
-    const { hashed_password, ...userNoPass } = user.dataValues
+    const { hashed_password, reset_token, ...userNoPass } = user.dataValues
     return userNoPass
   })
   res.send(rg(true, {

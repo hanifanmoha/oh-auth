@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
+import Head from 'next/head'
 
 import './style.scss'
 import styles from './index.scss'
@@ -45,6 +46,9 @@ const Index = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>Dashboard | OH AUTH</title>
+      </Head>
       <p onClick={logout} className={styles.logout}>logout</p>
       {currentUser && <h3 className={cx(styles.greeting)}>
         Hi, {currentUser.first_name} {currentUser.last_name}!

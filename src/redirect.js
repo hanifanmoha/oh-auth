@@ -3,6 +3,7 @@
  */
 
 module.exports = redirect
+import Router from 'next/router'
 
 /**
  * Redirect
@@ -13,6 +14,7 @@ function redirect (ctx, path) {
     ctx.res.writeHead(302, { Location: path })
     ctx.res.end()
   } else {
-    document.location.pathname = path
+    // document.location.pathname = path
+    Router.push(path)
   }
 }
