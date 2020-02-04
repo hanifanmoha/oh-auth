@@ -21,7 +21,10 @@ const registration = async (user, password) => {
       to: user.email,
       subject: 'OH-AUTH CREDENTIAL',
       html: html,
-    })({})
+    })({}, (error, result, fullResult) => {
+      if (error) console.error(error);
+      console.log(result);
+    })
   } catch (error) {
     console.log('Sending registration email possibly failed!')
     console.error(error)
@@ -44,7 +47,10 @@ const resetPassword = async (email, token) => {
       to: email,
       subject: 'OH-AUTH RESET PASSWORD',
       html: html,
-    })({})
+    })({}, (error, result, fullResult) => {
+      if (error) console.error(error);
+      console.log(result);
+    })
   } catch (error) {
     console.log('Sending reset password email possibly failed!')
     console.error(error)
