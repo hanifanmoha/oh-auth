@@ -1777,13 +1777,13 @@ send@0.16.2:
     range-parser "~1.2.0"
     statuses "~1.4.0"
 
-sequelize-pool@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/sequelize-pool/-/sequelize-pool-2.2.0.tgz#fd4eb05ccefb5df5c23d2cc6fd934c20fd9c5dab"
+sequelize-pool@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/sequelize-pool/-/sequelize-pool-2.3.0.tgz#64f1fe8744228172c474f530604b6133be64993d"
 
-sequelize@^5.9.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-5.9.0.tgz#8c5e6e681a8ef451aa6148ac9fb7a25f27ad4ccc"
+sequelize@^5.15.1:
+  version "5.15.1"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-5.15.1.tgz#f130ded17e74395ae7f5e265277c99577e895afb"
   dependencies:
     bluebird "^3.5.0"
     cls-bluebird "^2.1.0"
@@ -1795,7 +1795,7 @@ sequelize@^5.9.0:
     moment-timezone "^0.5.21"
     retry-as-promised "^3.1.0"
     semver "^6.1.1"
-    sequelize-pool "^2.2.0"
+    sequelize-pool "^2.3.0"
     toposort-class "^1.0.1"
     uuid "^3.2.1"
     validator "^10.11.0"
